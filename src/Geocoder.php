@@ -86,27 +86,27 @@ class Geocoder {
                         $area_code = $val[2];
                         $lbs = json_decode($val[5], true);
                         foreach ($lbs as $arr) {
-                            $status = $Lbs->is_polygon($point, $arr);
-                            if ($status) {
-                                break;
-                            }
-                        }
-                        if ($status) {
-                            // 找出下面的乡镇
-                            $township_file = $path.'lbs_township'.DIRECTORY_SEPARATOR.$v[0].'.php';
-                            if (file_exists($township_file) == false) {
-                                break;
-                            }
-                            $lbs_list = require $township_file;
-                            foreach ($lbs_list as $val) {
-                                $township = $val[0];
-                                $township_code = $val[1];
-                                $res = false;
-                                $lbs = json_decode($val[2], true);
-                                foreach ($lbs as $arr) {
-                                    $res = $Lbs->is_polygon($point, $arr);
-                                    if ($res) {
-                                        $status = true;
+                            if ($Lbs->is_polygon($point, $arr)) {
+                                // 找出下面的乡镇
+                                $township_file = $path.'lbs_township'.DIRECTORY_SEPARATOR.$v[0].'.php';
+                                if (file_exists($township_file) == false) {
+                                    $township = '';
+                                    $township_code = '';
+                                    break;
+                                }
+                                $lbs_list = require $township_file;
+                                foreach ($lbs_list as $val) {
+                                    $lbs = json_decode($val[2], true);
+                                    foreach ($lbs as $arr) {
+                                        $res = $Lbs->is_polygon($point, $arr);
+                                        if ($res) {
+                                            $status = true;
+                                            $township = $val[0];
+                                            $township_code = $val[1];
+                                            break;
+                                        }
+                                    }
+                                    if ($status) {
                                         break;
                                     }
                                 }
@@ -114,9 +114,11 @@ class Geocoder {
                                     break;
                                 }
                             }
-                            break;
                         }
                     }
+                    if ($status) {
+                        break;
+                    }    
                 }
             }
 
