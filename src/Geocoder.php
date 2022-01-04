@@ -126,7 +126,7 @@ class Geocoder {
                 break;
             }
         }
-        if (!$status) {
+        if (!isset($area_code)) {
             $this->error = '区域查询失败';
             return false;
         }
