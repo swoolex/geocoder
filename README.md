@@ -14,4 +14,4 @@ Geocoder组件为SW-X框架的官方扩展包，是对国内经纬度进行省�
 
 ### 文档地址
 
-[文档地址](https://www.sw-x.cn/word/geocoder.html "文档地址")
+[文档地址](https://www.sw-x.cn/word/v2.5.x/geocoder.html "文档地址")
